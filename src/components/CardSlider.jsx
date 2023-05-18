@@ -19,7 +19,6 @@ export default React.memo(function CardSlider({ data, title }) {
   };
 
 
-  console.log({data})
   return (
     <Container
       className="flex column"

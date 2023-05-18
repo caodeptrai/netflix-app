@@ -1,15 +1,20 @@
-import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC1Hf0_rdWLBzDPJPcO9CJN4y6M6-EgKH4",
-  authDomain: "react-auth-6788d.firebaseapp.com",
-  projectId: "react-auth-6788d",
-  storageBucket: "react-auth-6788d.appspot.com",
-  messagingSenderId: "131797845021",
-  appId: "1:131797845021:web:3f7ff4766e2b89ca5d32f4",
-  measurementId: "G-VWPBR1NSLL",
+  apiKey: "AIzaSyACDbGu-1Z25BQ44BVE8Kr-oHMbgHBt9mQ",
+  authDomain: "netflix-8b8f5.firebaseapp.com",
+  projectId: "netflix-8b8f5",
+  storageBucket: "netflix-8b8f5.appspot.com",
+  messagingSenderId: "211475307740",
+  appId: "1:211475307740:web:fc7fc05b01b655779ce819"
 };
 
-const app = initializeApp(firebaseConfig);
-export const firebaseAuth = getAuth(app);
+export const app = initializeApp(firebaseConfig);
+export const firebaseAuth = getAuth();
+export const storage = getStorage();
+export const db = getFirestore();
+
+

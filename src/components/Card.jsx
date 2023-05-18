@@ -30,6 +30,10 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
     // }
   };
 
+  const handleMovie = (movieId)=> {
+    navigate(`/movies/${movieId}`)
+  }
+
   return (
     <Container
       onMouseEnter={() => setIsHovered(true)}
@@ -38,7 +42,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
       <img
         src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
         alt="card"
-        onClick={() => navigate("/movies/123")}
+        onClick={()=>handleMovie(movieData.id)}
       />
 
       {isHovered && (
@@ -47,28 +51,21 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
             <img
               src={`https://image.tmdb.org/t/p/w500${movieData.image}`}
               alt="card"
-              onClick={() => navigate("/movies/123")}
+              onClick={()=>handleMovie(movieData.id)}
             />
-            {/* <video
-              src={video}
-              autoPlay={true}
-              loop
-              muted
-              onClick={() => navigate("/player")}
-            /> */}
+         
           </div>
           <div className="info-container flex column">
-            <h3 className="name" onClick={() => navigate("/movies/123")}>
+            <h3 className="name"  onClick={()=>handleMovie(movieData.id)}>
               {movieData.name}
             </h3>
             <div className="icons flex j-between">
               <div className="controls flex">
                 <IoPlayCircleSharp
                   title="Play"
-                  onClick={() => navigate("/movies/123")}
+                  onClick={()=>handleMovie(movieData.id)}
                 />
-                <RiThumbUpFill title="Like" />
-                <RiThumbDownFill title="Dislike" />
+                
                 {isLiked ? (
                   <BsCheck
                     title="Remove from List"
@@ -89,7 +86,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
             <div className="genres flex">
               <ul className="flex">
                 {movieData.genres.map((genre) => (
-                  <li>{genre}</li>
+                  <li key={genre.id}>{genre}</li>
                 ))}
               </ul>
             </div>
