@@ -1,33 +1,62 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaList, FaPlay, FaStar } from 'react-icons/fa';
 import styled from 'styled-components';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Navbar from '../components/Navbar';
+import { API_KEY, TMDB_BASE_URL } from "../utils/constants";
+import axios from 'axios';
+import Comment from '../components/Comment';
 const ViewDetail = () => {
 
-  const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const handlePlay = ()=> {
-    navigate('/player/123')
+  const navigate = useNavigate();
+  let { movieId } = useParams();
+  const [movieDetail,setMovieDetail] = useState();
+  
+  useEffect(()=>{
+    const fetchData = async ()=> {
+      try {
+        
+        const response  = await axios.get(`${TMDB_BASE_URL}/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`)
+        setMovieDetail(response.data)
+      } catch (error) {
+        console.error(error);
+      }
+  
+    }
+    fetchData ();
+  },[ movieId])
+
+  function handlePlay() {
+    navigate(`/player/${movieDetail?.videos?.results[0]?.key}`);
   }
+  window.onscroll = () => {
+    setIsScrolled(window.pageYOffset === 0 ? false : true);
+    return () => (window.onscroll = null);
+  };
+
   return (
     <Container>
+        <div className="navbar">
+        <Navbar isScrolled={isScrolled} />
+      </div>
       <div className='content'>
         <div className="content-wrap-left">
 
           <div className='wrap-left'>
 
           <div className='poster'>
-            <img className='poster-path' src="https://image.tmdb.org/t/p/w500/kuf6dutpsT0vSVehic3EZIqkOBt.jpg" alt="" />
+            <img className='poster-path' src={`https://image.tmdb.org/t/p/w500/${movieDetail?.poster_path}`} alt="" />
           </div>
           <div className="content-right">
 
           <div className='infor'>
-            <h3 className="title">
-            Barbie in the 12 Dancing Princesses
+            <h3 className="title"> {movieDetail?.title}
             </h3>
             <div className='overview'>
               <h4 className='overview-title'>Overview</h4>
-              <p className='overview-desc'>King Randolph sends for his cousin Duchess Rowena to help turn his daughters, Princess Genevieve and her 11 sisters, into better ladies. But the Duchess takes away all the sisters fun, including the sisters favorite pastime: dancing.Thinking all hope is lost they find a secret passageway to a magical land were they can dance the night away.</p>
+              <p className='overview-desc'>{movieDetail?.overview}</p>
             </div>
 
           
@@ -35,21 +64,21 @@ const ViewDetail = () => {
 
             <div className="field">
               <span className='field-name'>Grenres:</span>
-              <span className='field-value'>Animation </span>
-              <span>Family</span>
+              {movieDetail?.genres.map((genre)=> <span key={genre.id} className='field-value'>{genre.name} </span>)}
+     
             </div>
             <div className="field">
               <span className='field-name'>View:</span>
-              <span className='field-value'>43.529</span>
+              <span className='field-value'>{movieDetail?.popularity}</span>
             </div>
             <div className="field">
               <span className='field-name'>Vote:</span>
-              <span className="field-value">941</span>
+              <span className="field-value">{movieDetail?.vote_count}</span>
              
             </div>
             <div className="field">
               <span className='field-name'>Vote average:</span>
-              <span className="field-value">7.736</span>
+              <span className="field-value">{movieDetail?.vote_average}</span>
             </div>
             <div className="field">
               <span className='field-name'>Author:</span>
@@ -60,7 +89,7 @@ const ViewDetail = () => {
                 Release date:
               </span>
               <div className="field-value">
-              2006-09-19
+              {movieDetail?.release_date}
               </div>
             </div>
           </div>
@@ -79,74 +108,12 @@ const ViewDetail = () => {
 
           </div>
           </div>
-           <Comment>
-              <div className="comment-container">
-
-                <h2><span className='slash'>/</span> Comment</h2>
-                <hr className='dvider'/>
-                <div className="comment-content">
-                  <span className='comment-number'>6 comments</span>
-                  
-                  <ul className='comment-list'>
-                      <li className='comment-item'>
-                      <img className='avatar' src="https://img.meta.com.vn/Data/image/2021/09/20/anh-meo-che-anh-meo-bua-15.jpg" alt="" />
-                      <div className="wrap-2">
-
-                      <span className='name'>Cao</span>
-                      <p className="message">Hay</p>
-                      <span className='createat'>4 day ago</span>
-                      </div>
-                      </li>
-                      <li className='comment-item'>
-                      <img className='avatar' src="https://img.meta.com.vn/Data/image/2021/09/20/anh-meo-che-anh-meo-bua-15.jpg" alt="" />
-                      <div className="wrap-2">
-
-                      <span className='name'>Cao</span>
-                      <p className="message">Hay</p>
-                      <span className='createat'>4 day ago</span>
-                      </div>
-                      </li>
-                      <li className='comment-item'>
-                      <img className='avatar' src="https://img.meta.com.vn/Data/image/2021/09/20/anh-meo-che-anh-meo-bua-15.jpg" alt="" />
-                      <div className="wrap-2">
-
-                      <span className='name'>Cao</span>
-                      <p className="message">Hay</p>
-                      <span className='createat'>4 day ago</span>
-                      </div>
-                      </li>
-                      <li className='comment-item'>
-                      <img className='avatar' src="https://img.meta.com.vn/Data/image/2021/09/20/anh-meo-che-anh-meo-bua-15.jpg" alt="" />
-                      <div className="wrap-2">
-
-                      <span className='name'>Cao</span>
-                      <p className="message">Hay</p>
-                      <span className='createat'>4 day ago</span>
-                      </div>
-                      </li>
-                      <li className='comment-item'>
-                      <img className='avatar' src="https://img.meta.com.vn/Data/image/2021/09/20/anh-meo-che-anh-meo-bua-15.jpg" alt="" />
-                      <div className="wrap-2">
-
-                      <span className='name'>Cao</span>
-                      <p className="message">Hay</p>
-                      <span className='createat'>4 day ago</span>
-                      </div>
-                      </li>
-                      
-                  </ul>
-                  <div className='comment-form'>
-                    <img className='avatar' src="https://img.meta.com.vn/Data/image/2021/09/20/anh-meo-che-anh-meo-bua-15.jpg" alt="" />
-                    <textarea className='comment-input' type="text" placeholder='create a comment...' />
-                  </div>
-                </div>
-              </div>
-           </Comment>
+          <Comment movieId={movieId}/>
         </div>
 
 
           <div className="content-ads">
-            quảng cáo
+            <img src="https://inanaz.com.vn/wp-content/uploads/2023/03/mau-banner-quang-cao-dep.jpg" alt="" />
           </div>
 
 
@@ -162,7 +129,7 @@ const Container = styled.div`
   .content {
     display:flex;
     padding:30px 40px;
-
+    margin-top: 104px;
     .content-wrap-left {
       flex:1;
     }
@@ -209,7 +176,7 @@ const Container = styled.div`
     .content-ads {
       width:300px;
       height:450px;
-      background-color:red;
+      // background-color:red;
     }
 
     .infor {
@@ -256,85 +223,5 @@ const Container = styled.div`
 
 
 
-const Comment = styled.div`
-    .comment-container {
-      margin-top:30px;
-    }
-    .slash {
-      color:rgb(253, 101, 0);
-    }
-
-    .dvider {
-      width: 100%;
-    background-color: rgb(204, 204, 204);
-    margin-top: 6px;
-    border: 1px solid transparent;
-    border-top: 1px;
-    }
-
-    .comment-content {
-      background-color:white;
-      padding:20px;
-      margin-top:20px;
-      border-radius:8px;
-    }
-
-    .comment-number {
-      color:#000;
-      font-size:18px;
-      font-weight:600;
-    }
-
-    .comment-list {
-      list-style: none;
-    padding: 0px;
-    margin-top: 20px;
-    overflow-y: scroll;
-    max-height: 300px;
-    }
-
-    .comment-item {
-      display:flex;
-      gap:10px;
-      padding:10px 0;
-    }
-
-    .name {
-      color: #385898;
-      font-weight:600;
-    }
-
-    .message {
-      font-size:13px;
-      color:#1f1f1f;
-      font-weight:450;
-      margin:0;
-    }
-    .createat {
-      font-size:10px;
-      color:#ababab;
-      
-    }
-
-    .avatar {
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      object-fit:cover;
-    }
-
-    .comment-form {
-      display:flex;
-      gap:10px;
-      width:100%;
-      margin-top:60px;
-    }
-
-    .comment-input {
-      width:100%;
-      height:150px;
-      padding:10px
-    }
-`
 
 export default ViewDetail

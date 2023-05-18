@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
-import { firebaseAuth } from "../utils/firebase-config";
+import { db, firebaseAuth } from "../utils/firebase-config";
+import { doc, setDoc } from "firebase/firestore";
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -19,15 +20,31 @@ function Signup() {
   const handleSignIn = async () => {
     try {
       const { email, password } = formValues;
-      await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      const res= await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      try {
+        await Promise.all([
+            //create user on firestore
+            setDoc(doc(db, 'users', res.user.uid), {
+                uid: res.user.uid,
+                email,
+              
+                // keywords: generateKeywords(displayName),
+            }),
+            //create empty user chats on firestore
+            setDoc(doc(db, 'userChats', res.user.uid), {}),
+        ]);
+        navigate('/');
+    } catch (err) {
+        console.log(err);
+    }
     } catch (error) {
       console.log(error);
     }
   };
 
-  // onAuthStateChanged(firebaseAuth, (currentUser) => {
-  //   if (currentUser) navigate("/");
-  // });
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) navigate("/");
+  });
 
   return (
     <Container showPassword={showPassword}>

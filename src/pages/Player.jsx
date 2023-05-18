@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { BsArrowLeft } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import VideoPlayer from "../components/VideoPlayer";
 
 
 export default function Player() {
   const navigate = useNavigate();
+  let { videoId } = useParams();
 
   return (
     <Container>
@@ -14,7 +15,7 @@ export default function Player() {
         <div className="back">
           <BsArrowLeft onClick={() => navigate(-1)} />
         </div>
-           <VideoPlayer />
+           <VideoPlayer videoId={videoId}/>
       </div>
     </Container>
   );

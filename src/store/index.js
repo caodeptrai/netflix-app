@@ -10,6 +10,7 @@ const initialState = {
   movies: [],
   genresLoaded: false,
   genres: [],
+  movie:{}
 };
 
 export const getGenres = createAsyncThunk("netflix/genres", async () => {
@@ -76,6 +77,19 @@ export const fetchMovies = createAsyncThunk(
   }
 );
 
+export const fetchMovieDetail = createAsyncThunk(
+  "netflix/detail",
+  async (movieId) => {
+    const {
+      data: { movie },
+    } = await axios.get(`${TMDB_BASE_URL}/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`)
+
+    console.log({movieId})
+    console.log({movie})
+    return movie;
+  }
+)
+
 export const getUsersLikedMovies = createAsyncThunk(
   "netflix/getLiked",
   async (email) => {
@@ -109,6 +123,9 @@ const NetflixSlice = createSlice({
     });
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
       state.movies = action.payload;
+    });
+    builder.addCase(fetchMovieDetail.fulfilled, (state, action) => {
+      state.movie = action.payload;
     });
     builder.addCase(fetchDataByGenre.fulfilled, (state, action) => {
       state.movies = action.payload;

@@ -1,7 +1,7 @@
 import React from 'react';
 import YouTube from 'react-youtube';
 
-function VideoPlayer() {
+function VideoPlayer({videoId}) {
   const opts = {
     height: '315',
     width: '560',
@@ -16,7 +16,7 @@ function VideoPlayer() {
 
   return (
     <div>
-      <YouTube videoId="pNX5GBTlc70" opts={opts} />
+      <YouTube videoId={videoId} opts={opts} />
     </div>
   );
 }
