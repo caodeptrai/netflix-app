@@ -24,7 +24,7 @@ const Message = ({message}) => {
         return unsubscribe;
     }, [message]);
 
-    console.log({chat})
+
     
   return (
     <Container className='comment-item'>
