@@ -8,7 +8,8 @@ export default function Header(props) {
   return (
     <StyledHeader className="flex a-center j-between">
       <div className="logo">
-        <img src={logo} alt="logo" />
+        {/* <img src={logo} alt="logo" /> */}
+        <span className="brand">FarmTun</span>
       </div>
       <button onClick={() => navigate(props.login ? "/login" : "/signup")}>
         {props.login ? "Log In" : "Sign In"}
@@ -19,8 +20,12 @@ export default function Header(props) {
 const StyledHeader = styled.header`
   padding: 0 4rem;
   .logo {
-    img {
-      height: 5rem;
+
+    .brand {
+      font-size: 40px;
+      font-weight: 600;
+      color: red;
+      font-family: cursive;
     }
   }
   button {

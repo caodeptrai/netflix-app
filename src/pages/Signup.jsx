@@ -32,6 +32,7 @@ function Signup() {
             }),
             //create empty user chats on firestore
             setDoc(doc(db, 'userChats', res.user.uid), {}),
+            setDoc(doc(db, 'mylist', res.user.uid), {}),
         ]);
         navigate('/');
     } catch (err) {

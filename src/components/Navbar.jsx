@@ -2,12 +2,12 @@ import { signOut } from "firebase/auth";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/logo.png";
 import { firebaseAuth } from "../utils/firebase-config";
 import { FaPowerOff, FaSearch } from "react-icons/fa";
+import Search from "./Search";
 export default function Navbar({ isScrolled }) {
-  const [showSearch, setShowSearch] = useState(false);
-  const [inputHover, setInputHover] = useState(false);
+  
+  
   const links = [
     { name: "Home", link: "/" },
     { name: "TV Shows", link: "/tv" },
@@ -20,7 +20,8 @@ export default function Navbar({ isScrolled }) {
       <nav className={`${isScrolled ? "scrolled" : ""} flex`}>
         <div className="left flex a-center">
           <div className="brand flex a-center j-center">
-            <img src={logo} alt="Logo" />
+            {/* <img src={logo} alt="Logo" /> */}
+            <span className="logo">FarmTun</span>
           </div>
           <ul className="links flex">
             {links.map(({ name, link }) => {
@@ -33,18 +34,14 @@ export default function Navbar({ isScrolled }) {
           </ul>
         </div>
         <div className="right flex a-center">
-          <div className={`search ${showSearch ? "show-search" : ""}`}>
+          <div className="show-search">
+          <Search />
             <button
-              onFocus={() => setShowSearch(true)}
-              onBlur={() => {
-                if (!inputHover) {
-                  setShowSearch(false);
-                }
-              }}
+             
             >
               <FaSearch />
             </button>
-            <input
+            {/* <input
               type="text"
               placeholder="Search"
               onMouseEnter={() => setInputHover(true)}
@@ -53,7 +50,8 @@ export default function Navbar({ isScrolled }) {
                 setShowSearch(false);
                 setInputHover(false);
               }}
-            />
+            /> */}
+           
           </div>
           <button onClick={() => signOut(firebaseAuth)}>
             <FaPowerOff />
@@ -86,6 +84,13 @@ const Container = styled.div`
         img {
           height: 4rem;
         }
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 3px;
+        color: red;
       }
       .links {
         list-style-type: none;
@@ -144,14 +149,10 @@ const Container = styled.div`
         }
       }
       .show-search {
-        border: 1px solid white;
-        background-color: rgba(0, 0, 0, 0.6);
-        input {
-          width: 100%;
-          opacity: 1;
-          visibility: visible;
-          padding: 0.3rem;
-        }
+        display: flex;
+        background-color: transparent;
+        width:250px;
+
       }
     }
   }
